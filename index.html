@@ -14,25 +14,21 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
 
         .container {
-            width: 100%;
-            max-width: 600px;
+            width: 90%;
+            max-width: 800px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             padding: 20px;
-            text-align: center;
+            margin: 20px;
         }
 
-        h1 {
+        h1, h2 {
             color: #007bff;
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            color: #333;
             margin-bottom: 15px;
         }
 
@@ -75,17 +71,16 @@
             background-color: #0056b3;
         }
 
-        .record {
+        .chatbox, .records, .meditation {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 10px;
+            margin: 10px 0;
             background-color: #f9f9f9;
             border: 1px solid #ccc;
             border-radius: 4px;
-            padding: 10px;
-            margin: 10px 0;
-            text-align: left;
-        }
-
-        .record h3 {
-            margin: 0;
         }
     </style>
 </head>
@@ -93,8 +88,17 @@
     <div class="container">
         <h1>Mental Health Tracker</h1>
 
-        <div>
-            <h2>Record Your Mood</h2>
+        <!-- AI Counselor Chat -->
+        <div class="chatbox">
+            <h2>AI Counselor</h2>
+            <div id="chatMessages"></div>
+            <input type="text" id="userMessage" placeholder="Type your message here">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+
+        <!-- Mood Tracker -->
+        <div class="mood-tracker">
+            <h2>Track Your Mood</h2>
             <form id="moodForm">
                 <label for="date">Date:</label>
                 <input type="date" id="date" name="date" required>
@@ -115,13 +119,42 @@
             </form>
         </div>
 
-        <div>
+        <!-- Meditation Guide -->
+        <div class="meditation">
+            <h2>Guided Meditation</h2>
+            <button onclick="startMeditation()">Start Meditation</button>
+        </div>
+
+        <!-- Records -->
+        <div class="records">
             <h2>Your Mood Records</h2>
             <div id="recordsContainer"></div>
         </div>
     </div>
 
     <script>
+        // AI Counselor Chat
+        function sendMessage() {
+            const userMessage = document.getElementById('userMessage').value;
+            const chatMessages = document.getElementById('chatMessages');
+
+            if (userMessage.trim() === '') return;
+
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.className = 'message';
+            userMsgDiv.innerText = `You: ${userMessage}`;
+            chatMessages.appendChild(userMsgDiv);
+
+            // Simple AI response simulation
+            const aiMsgDiv = document.createElement('div');
+            aiMsgDiv.className = 'message';
+            aiMsgDiv.innerText = `AI: I understand. Tell me more about how you're feeling.`;
+            chatMessages.appendChild(aiMsgDiv);
+
+            document.getElementById('userMessage').value = '';
+        }
+
+        // Mood Tracker
         const moodForm = document.getElementById('moodForm');
         const recordsContainer = document.getElementById('recordsContainer');
 
@@ -161,7 +194,7 @@
 
             records.forEach(record => {
                 const recordElement = document.createElement('div');
-                recordElement.classList.add('record');
+                recordElement.classList.add('message');
                 recordElement.innerHTML = `
                     <h3>${record.date}</h3>
                     <p><strong>Mood:</strong> ${record.mood}</p>
@@ -171,7 +204,12 @@
             });
         }
 
-        // ページが読み込まれたときにレコードを表示
+        // Meditation Guide
+        function startMeditation() {
+            alert("Let's start a guided meditation session. Close your eyes, breathe deeply, and relax.");
+        }
+
+        // Display records on page load
         displayRecords();
     </script>
 </body>
